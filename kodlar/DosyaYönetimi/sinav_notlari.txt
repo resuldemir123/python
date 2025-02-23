@@ -1,0 +1,3 @@
+resul demir:13,23,45
+yusuf bakırlı:23,34,45
+mustafa taşkıran turabi:34,45,56
