@@ -1,0 +1,62 @@
+Requests Kütüphanesi Hakkında Bilgi
+
+requests, Python'da HTTP istekleri göndermek için kullanılan popüler bir kütüphanedir. API'lerle etkileşim kurmak, web sayfalarından veri çekmek veya sunuculara veri göndermek için kullanılır.
+
+Temel Özellikleri:
+GET İsteği:
+Bir URL'den veri çekmek için kullanılır.
+Örnek:
+
+python
+Copy
+response = requests.get("https://api.example.com/data")
+POST İsteği:
+Sunucuya veri göndermek için kullanılır.
+Örnek:
+
+python
+Copy
+response = requests.post("https://api.example.com/submit", data={"key": "value"})
+JSON Verisi İşleme:
+API'den gelen JSON verisini Python sözlüğüne dönüştürür.
+Örnek:
+
+python
+Copy
+data = response.json()
+Durum Kodu Kontrolü:
+İsteğin başarılı olup olmadığını kontrol eder.
+Örnek:
+
+python
+Copy
+if response.status_code == 200:
+    print("Başarılı!")
+Header ve Parametreler:
+İsteklere özel başlıklar veya parametreler eklenebilir.
+Örnek:
+
+python
+Copy
+headers = {"Authorization": "Bearer token"}
+response = requests.get("https://api.example.com/data", headers=headers)
+Requests Demo
+Aşağıda, requests kütüphanesinin temel kullanımını gösteren bir örnek bulunuyor:
+
+python
+Copy
+import requests
+
+# GET isteği örneği
+response = requests.get("https://jsonplaceholder.typicode.com/posts/1")
+
+# Durum kodunu kontrol etme
+if response.status_code == 200:
+    data = response.json()  # JSON verisini Python sözlüğüne dönüştür
+    print("Başlık:", data["title"])
+    print("İçerik:", data["body"])
+else:
+    print("Hata: Veri alınamadı!")
+    
+Sonuç
+Bu kod, ExchangeRate-API kullanarak döviz kurlarını çekiyor ve kullanıcının belirttiği miktarda döviz bozma işlemi yapıyor. requests kütüphanesi, API'lerle etkileşim kurmak için güçlü ve kullanımı kolay bir araçtır. 🚀
