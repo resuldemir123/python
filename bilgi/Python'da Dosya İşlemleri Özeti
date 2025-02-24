@@ -1,0 +1,50 @@
+Python'da Dosya İşlemleri Özeti
+Python'da dosya işlemleri için open() fonksiyonu kullanılır. Bu fonksiyon, dosyayı açmak ve okuma/yazma işlemleri yapmak için kullanılır.
+
+1. Dosya Açma Modları
+"r" (Read): Dosyayı okumak için açar. Dosya yoksa hata verir.
+
+"w" (Write): Dosyayı yazmak için açar. Dosya varsa içeriğini siler, yoksa oluşturur.
+
+"a" (Append): Dosyayı ekleme yapmak için açar. Dosya yoksa oluşturur.
+
+"r+" (Read + Write): Dosyayı hem okumak hem de yazmak için açar.
+
+"b" (Binary): Dosyayı binary (ikili) modda açar (örneğin, "rb", "wb").
+
+2. Dosya Okuma
+python
+Copy
+with open("dosya.txt", "r", encoding="utf-8") as file:
+    icerik = file.read()  # Dosyanın tamamını okur.
+    satirlar = file.readlines()  # Dosyayı satır satır okur ve liste olarak döndürür.
+3. Dosyaya Yazma
+python
+Copy
+with open("dosya.txt", "w", encoding="utf-8") as file:
+    file.write("Merhaba Dünya!")  # Dosyaya yazı yazar.
+4. Dosyaya Ekleme Yapma
+python
+Copy
+with open("dosya.txt", "a", encoding="utf-8") as file:
+    file.write("Yeni satır ekleme.")  # Dosyanın sonuna yeni satır ekler.
+5. Dosya İşlemlerinde with Kullanımı
+with bloğu, dosya işlemlerini otomatik olarak kapatır ve hata yönetimini kolaylaştırır. Örneğin:
+
+python
+Copy
+with open("dosya.txt", "r", encoding="utf-8") as file:
+    icerik = file.read()
+# Dosya otomatik olarak kapanır.
+6. Dosya İşlemlerinde Hata Yönetimi
+Dosya işlemlerinde hata yönetimi için try-except kullanılır:
+
+python
+Copy
+try:
+    with open("dosya.txt", "r", encoding="utf-8") as file:
+        icerik = file.read()
+except FileNotFoundError:
+    print("Dosya bulunamadı!")
+Sonuç
+Bu kod, öğrenci notlarını yönetmek için dosya işlemlerini kullanır. Python'da dosya işlemleri oldukça basit ve güçlüdür. with bloğu sayesinde dosyalar otomatik olarak kapatılır ve hata yönetimi kolaylaşır. 🚀
