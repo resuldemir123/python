@@ -1,0 +1,259 @@
+Elbette! **Selenium**, web tarayıcılarını otomatikleştirmek için kullanılan popüler bir araçtır. Python ile birlikte kullanıldığında, web sitelerinde otomatik testler yapmak, veri çekmek veya tekrarlayan görevleri otomatikleştirmek için oldukça güçlü bir araç haline gelir. Aşağıda Selenium hakkında detaylı bilgiler bulabilirsiniz.
+
+---
+
+## **Selenium Nedir?**
+Selenium, web tarayıcılarını otomatikleştirmek için kullanılan açık kaynaklı bir araçtır. Özellikle web uygulamalarının test edilmesi için tasarlanmıştır, ancak web scraping (web kazıma) ve otomasyon için de yaygın olarak kullanılır.
+
+---
+
+## **Selenium'un Temel Özellikleri**
+1. **Tarayıcı Otomasyonu:** Chrome, Firefox, Edge gibi popüler tarayıcıları otomatikleştirir.
+2. **Çoklu Dil Desteği:** Python, Java, C#, JavaScript gibi dillerle kullanılabilir.
+3. **Dinamik Web Sayfaları:** JavaScript tabanlı dinamik web sayfalarıyla etkileşim kurar.
+4. **Test Senaryoları:** Web uygulamalarının test edilmesi için kullanılır.
+5. **Web Scraping:** Web sitelerinden veri çekmek için kullanılır.
+
+---
+
+## **Selenium Kurulumu**
+Selenium'u Python ile kullanmak için öncelikle kurulum yapmanız gerekiyor.
+
+### **1. Selenium Paketini Kurma**
+Terminal veya komut satırında aşağıdaki komutu çalıştırın:
+```bash
+pip install selenium
+```
+
+### **2. WebDriver Kurulumu**
+Selenium, tarayıcıları otomatikleştirmek için WebDriver kullanır. Kullanacağınız tarayıcıya uygun WebDriver'ı indirmeniz gerekiyor.
+
+- **Chrome için:** [ChromeDriver](https://sites.google.com/chromium.org/driver/)
+- **Firefox için:** [GeckoDriver](https://github.com/mozilla/geckodriver/releases)
+- **Edge için:** [EdgeDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)
+
+WebDriver'ı indirdikten sonra, PATH'e ekleyin veya kod içinde yolunu belirtin.
+
+---
+
+## **Selenium ile Temel İşlemler**
+
+### **1. Tarayıcıyı Başlatma**
+```python
+from selenium import webdriver
+
+# Chrome tarayıcısını başlat
+driver = webdriver.Chrome(executable_path="path/to/chromedriver")
+
+# Web sitesini aç
+driver.get("https://www.example.com")
+```
+
+---
+
+### **2. Web Elementlerini Bulma**
+Selenium, web sayfasındaki elementleri bulmak için çeşitli yöntemler sunar.
+
+#### **Örnekler:**
+```python
+# ID ile element bulma
+element = driver.find_element_by_id("element-id")
+
+# Name ile element bulma
+element = driver.find_element_by_name("element-name")
+
+# Class Name ile element bulma
+element = driver.find_element_by_class_name("element-class")
+
+# XPath ile element bulma
+element = driver.find_element_by_xpath("//div[@class='example']")
+
+# CSS Selector ile element bulma
+element = driver.find_element_by_css_selector(".example-class")
+```
+
+---
+
+### **3. Elementlerle Etkileşim**
+Bulunan elementlerle etkileşim kurmak için çeşitli yöntemler vardır.
+
+#### **Örnekler:**
+```python
+# Metin yazma
+element.send_keys("Merhaba Dünya!")
+
+# Tıklama
+element.click()
+
+# Metin okuma
+text = element.text
+print(text)
+
+# Özellik değerini alma
+attribute_value = element.get_attribute("href")
+print(attribute_value)
+```
+
+---
+
+### **4. Sayfa Gezinme**
+```python
+# Sayfayı yenileme
+driver.refresh()
+
+# Geri gitme
+driver.back()
+
+# İleri gitme
+driver.forward()
+```
+
+---
+
+### **5. Tarayıcıyı Kapatma**
+```python
+# Tarayıcıyı kapat
+driver.quit()
+
+# Sadece mevcut sekmeyi kapat
+driver.close()
+```
+
+---
+
+## **Selenium ile İleri Düzey İşlemler**
+
+### **1. Bekleme İşlemleri**
+Web sayfaları yüklenirken veya elementler görünür hale gelirken bekleme işlemleri yapmak gerekebilir.
+
+#### **Örnek:**
+```python
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+# Element görünür olana kadar bekle
+element = WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.ID, "element-id"))
+)
+```
+
+---
+
+### **2. JavaScript Çalıştırma**
+Selenium ile tarayıcıda JavaScript kodu çalıştırabilirsiniz.
+
+#### **Örnek:**
+```python
+driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+```
+
+---
+
+### **3. Çerez Yönetimi**
+```python
+# Çerez ekleme
+driver.add_cookie({"name": "cookie_name", "value": "cookie_value"})
+
+# Çerezleri alma
+cookies = driver.get_cookies()
+print(cookies)
+
+# Çerez silme
+driver.delete_cookie("cookie_name")
+```
+
+---
+
+### **4. Ekran Görüntüsü Alma**
+```python
+driver.save_screenshot("screenshot.png")
+```
+
+---
+
+### **5. Birden Fazla Sekme veya Pencere Yönetimi**
+```python
+# Yeni sekme açma
+driver.execute_script("window.open('https://www.example.com');")
+
+# Sekmeler arasında geçiş yapma
+driver.switch_to.window(driver.window_handles[1])  # İkinci sekmeye geç
+```
+
+---
+
+## **Selenium ile Web Scraping Örneği**
+Aşağıda, bir web sitesinden başlıkları çeken basit bir örnek bulunmaktadır.
+
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+# Chrome tarayıcısını başlat
+driver = webdriver.Chrome(executable_path="path/to/chromedriver")
+
+# Web sitesini aç
+driver.get("https://www.example.com")
+
+# Başlıkları bul
+headings = driver.find_elements(By.TAG_NAME, "h1")
+
+# Başlıkları yazdır
+for heading in headings:
+    print(heading.text)
+
+# Tarayıcıyı kapat
+driver.quit()
+```
+
+---
+
+## **Selenium ile Test Otomasyonu Örneği**
+Aşağıda, bir giriş formunu otomatik olarak dolduran ve gönderen bir örnek bulunmaktadır.
+
+```python
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+# Chrome tarayıcısını başlat
+driver = webdriver.Chrome(executable_path="path/to/chromedriver")
+
+# Web sitesini aç
+driver.get("https://www.example.com/login")
+
+# Kullanıcı adı ve şifre alanlarını bul
+username = driver.find_element(By.ID, "username")
+password = driver.find_element(By.ID, "password")
+
+# Kullanıcı adı ve şifreyi gir
+username.send_keys("testuser")
+password.send_keys("testpassword")
+
+# Giriş butonuna tıkla
+login_button = driver.find_element(By.ID, "login-button")
+login_button.click()
+
+# Tarayıcıyı kapat
+driver.quit()
+```
+
+---
+
+## **Selenium ile İlgili İpuçları**
+1. **WebDriver'ı Güncel Tutun:** Tarayıcı ve WebDriver sürümlerinin uyumlu olmasına dikkat edin.
+2. **Bekleme İşlemlerini Kullanın:** Dinamik web sayfalarında elementlerin yüklenmesini beklemek için `WebDriverWait` kullanın.
+3. **Headless Mod:** Tarayıcıyı görünmez (headless) modda çalıştırarak performansı artırabilirsiniz.
+   ```python
+   from selenium.webdriver.chrome.options import Options
+
+   options = Options()
+   options.add_argument("--headless")
+   driver = webdriver.Chrome(options=options)
+   ```
+4. **Hata Yönetimi:** Beklenmeyen durumlar için `try-except` blokları kullanın.
+
+---
+
+## **Sonuç**
+Selenium, web tarayıcılarını otomatikleştirmek için güçlü bir araçtır. Python ile birlikte kullanıldığında, web scraping, test otomasyonu ve tekrarlayan görevler için oldukça etkilidir. Yukarıdaki örnekler ve ipuçlarıyla Selenium'u projelerinizde rahatlıkla kullanabilirsiniz. 🚀
