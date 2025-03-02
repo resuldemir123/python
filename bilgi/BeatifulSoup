@@ -1,0 +1,181 @@
+Elbette! **Beautiful Soup**, Python'da web sayfalarından veri çekmek (web scraping) için kullanılan popüler bir kütüphanedir. HTML ve XML dokümanlarını ayrıştırarak (parse), belirli verilere kolayca erişmenizi sağlar. Aşağıda Beautiful Soup ile ilgili detaylı bilgiler bulabilirsiniz.
+
+---
+
+## **Beautiful Soup Nedir?**
+Beautiful Soup, HTML ve XML dokümanlarını ayrıştırmak için kullanılan bir Python kütüphanesidir. Web sayfalarından veri çekmek (web scraping) için sıklıkla kullanılır. Özellikle, karmaşık HTML yapılarını kolayca işleyebilir ve belirli etiketlere, sınıflara veya ID'lere göre veri çekebilir.
+
+---
+
+## **Beautiful Soup Kurulumu**
+Beautiful Soup'u kullanmak için öncelikle kurulum yapmanız gerekiyor.
+
+### **1. Beautiful Soup Kurma**
+Terminal veya komut satırında aşağıdaki komutu çalıştırın:
+```bash
+pip install beautifulsoup4
+```
+
+### **2. requests Kütüphanesi Kurma**
+Beautiful Soup, genellikle web sayfalarını indirmek için `requests` kütüphanesiyle birlikte kullanılır. Eğer `requests` kurulu değilse, aşağıdaki komutu çalıştırın:
+```bash
+pip install requests
+```
+
+---
+
+## **Beautiful Soup Temel Kullanımı**
+
+### **1. Web Sayfasını İndirme ve Ayrıştırma**
+```python
+import requests
+from bs4 import BeautifulSoup
+
+# Web sayfasını indir
+url = "https://example.com"
+response = requests.get(url)
+
+# Beautiful Soup ile ayrıştır
+soup = BeautifulSoup(response.text, "html.parser")
+
+# HTML içeriğini yazdır
+print(soup.prettify())
+```
+
+---
+
+### **2. Etiketlere Erişim**
+Beautiful Soup, HTML etiketlerine kolayca erişmenizi sağlar.
+
+#### **Örnek: Başlık Etiketini Bulma**
+```python
+title = soup.title
+print(title.text)  # Başlık metnini yazdır
+```
+
+#### **Örnek: Tüm Bağlantıları Bulma**
+```python
+for link in soup.find_all("a"):
+    print(link.get("href"))  # Bağlantıları yazdır
+```
+
+---
+
+### **3. Sınıf ve ID ile Arama**
+Beautiful Soup, belirli sınıf veya ID'lere sahip elementleri bulmak için kullanılır.
+
+#### **Örnek: Belirli Bir Sınıfa Sahip Elementleri Bulma**
+```python
+for element in soup.find_all(class_="example-class"):
+    print(element.text)
+```
+
+#### **Örnek: Belirli Bir ID'ye Sahip Elementi Bulma**
+```python
+element = soup.find(id="example-id")
+print(element.text)
+```
+
+---
+
+### **4. CSS Seçicileri Kullanma**
+Beautiful Soup, CSS seçicileri kullanarak elementleri bulmayı destekler.
+
+#### **Örnek: CSS Seçicisi ile Arama**
+```python
+elements = soup.select("div.example-class > p")
+for element in elements:
+    print(element.text)
+```
+
+---
+
+## **Beautiful Soup ile Web Scraping Örneği**
+Aşağıda, bir web sayfasından başlıkları ve bağlantıları çeken basit bir örnek bulunmaktadır.
+
+```python
+import requests
+from bs4 import BeautifulSoup
+
+# Web sayfasını indir
+url = "https://example.com"
+response = requests.get(url)
+
+# Beautiful Soup ile ayrıştır
+soup = BeautifulSoup(response.text, "html.parser")
+
+# Başlıkları ve bağlantıları bul
+for heading in soup.find_all("h1"):
+    print(heading.text)
+
+for link in soup.find_all("a"):
+    print(link.get("href"))
+```
+
+---
+
+## **Beautiful Soup ile İleri Düzey İşlemler**
+
+### **1. Verileri Filtreleme**
+Beautiful Soup, belirli özelliklere sahip elementleri filtrelemek için kullanılabilir.
+
+#### **Örnek: Belirli Bir Özelliğe Sahip Elementleri Bulma**
+```python
+for element in soup.find_all("a", href=True):
+    if "example" in element["href"]:
+        print(element["href"])
+```
+
+---
+
+### **2. Verileri CSV'ye Kaydetme**
+Çekilen verileri bir CSV dosyasına kaydedebilirsiniz.
+
+#### **Örnek:**
+```python
+import csv
+
+# CSV dosyasını aç
+with open("output.csv", "w", newline="", encoding="utf-8") as file:
+    writer = csv.writer(file)
+    writer.writerow(["Başlık", "Bağlantı"])  # Başlık satırı
+
+    # Verileri yaz
+    for heading in soup.find_all("h1"):
+        writer.writerow([heading.text, ""])
+
+    for link in soup.find_all("a"):
+        writer.writerow(["", link.get("href")])
+```
+
+---
+
+### **3. Dinamik Sayfalarda Web Scraping**
+Beautiful Soup, yalnızca statik HTML sayfalarını ayrıştırır. Dinamik sayfalar için **Selenium** gibi bir araç kullanmanız gerekir.
+
+---
+
+## **Beautiful Soup ile İlgili İpuçları**
+1. **Hata Yönetimi:** Web sayfalarına erişirken hata yönetimi yapın.
+   ```python
+   try:
+       response = requests.get(url)
+       response.raise_for_status()  # HTTP hatalarını kontrol et
+   except requests.exceptions.RequestException as e:
+       print(f"Hata: {e}")
+   ```
+
+2. **Kullanıcı Aracısı (User-Agent) Ekleme:** Bazı web siteleri, botları engellemek için kullanıcı aracısını kontrol eder. Bu durumda, bir kullanıcı aracısı ekleyebilirsiniz.
+   ```python
+   headers = {
+       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+   }
+   response = requests.get(url, headers=headers)
+   ```
+
+3. **Gizli Bilgiler:** Web scraping yaparken, web sitelerinin kullanım koşullarına ve gizlilik politikalarına dikkat edin.
+
+---
+
+## **Sonuç**
+Beautiful Soup, Python'da web scraping yapmak için güçlü ve kullanımı kolay bir kütüphanedir. HTML ve XML dokümanlarını ayrıştırarak, belirli verilere kolayca erişmenizi sağlar. Yukarıdaki örnekler ve ipuçlarıyla Beautiful Soup'u projelerinizde rahatlıkla kullanabilirsiniz. 🚀
